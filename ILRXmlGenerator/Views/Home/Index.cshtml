@@ -1,0 +1,71 @@
+﻿@model ILRXmlGenerator.Models.UserDetails
+
+@{
+    ViewData["Title"] = "ILR Generator";
+}
+
+<h1><centre>ILR Generator</centre></h1>
+
+<form asp-action="GenerateXml" method="post">
+    <div class="form-group">
+        <label asp-for="UKPRN" class="control-label"></label>
+        <input asp-for="UKPRN" class="form-control"/>
+        <span asp-validation-for="UKPRN" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ULN" class="control-label"></label>
+        <input asp-for="ULN" class="form-control"/>
+        <span asp-validation-for="ULN" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AcademicYear" class="control-label"></label>
+        <select asp-for="AcademicYear" class="form-control" asp-items="ViewBag.AcademicYears"></select>
+        <span asp-validation-for="AcademicYear" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FamilyName" class="control-label"></label>
+        <input asp-for="FamilyName" class="form-control" />
+        <span asp-validation-for="FamilyName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="GivenName" class="control-label"></label>
+        <input asp-for="GivenName" class="form-control" />
+        <span asp-validation-for="GivenName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateOfBirth" class="control-label"></label>
+        <input asp-for="DateOfBirth" class="form-control" type="date" />
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LearnStartDate" class="control-label"></label>
+        <input asp-for="LearnStartDate" class="form-control" type="date" />
+        <span asp-validation-for="LearnStartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LearnPlanEndDate" class="control-label"></label>
+        <input asp-for="LearnPlanEndDate" class="form-control" type="date" />
+        <span asp-validation-for="LearnPlanEndDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StdCode" class="control-label"></label>
+        <input asp-for="StdCode" class="form-control" />
+        <span asp-validation-for="StdCode" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TNP1" class="control-label"></label>
+        <input asp-for="TNP1" class="form-control" type="number" />
+        <span asp-validation-for="TNP1" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TNP2" class="control-label"></label>
+        <input asp-for="TNP2" class="form-control" />
+        <span asp-validation-for="TNP2" class="text-danger"></span>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Generate XML</button>
+</form>
+
+@section Scripts {
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
