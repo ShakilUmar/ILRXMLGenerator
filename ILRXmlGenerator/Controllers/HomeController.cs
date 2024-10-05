@@ -15,10 +15,24 @@ namespace ILRXmlGenerator.Controllers
 
             // Predefined academic years
             ViewBag.AcademicYears = new List<SelectListItem>
-        {
+            {
             new SelectListItem { Value = "2324", Text = "2324" },
             new SelectListItem { Value = "2425", Text = "2425" }
-        };
+            };
+            ViewBag.CompletionStatus = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "1) In-learning" },
+                new SelectListItem { Value = "2", Text = "2) LearningCompleted" },
+                new SelectListItem { Value = "3", Text = "3) Withdrawn" },
+                new SelectListItem { Value = "6", Text = "6) Paused" }
+            };
+            ViewBag.Outcome = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "1) Achieved" },
+                new SelectListItem { Value = "2", Text = "2) Partial-Achieved" },
+                new SelectListItem { Value = "3", Text = "3) Null-Achieved" },
+                new SelectListItem { Value = "8", Text = "8) Not-Known" }
+            };
 
             return View(model);
         }
@@ -33,10 +47,24 @@ namespace ILRXmlGenerator.Controllers
 
             // Re-populate the dropdown list if the form is re-displayed due to validation errors
             ViewBag.AcademicYears = new List<SelectListItem>
-        {
+            {
             new SelectListItem { Value = "2324", Text = "2324" },
             new SelectListItem { Value = "2425", Text = "2425" }
-        };
+            };
+            ViewBag.CompletionStatus = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "1) In-learning" },
+                new SelectListItem { Value = "2", Text = "2) LearningCompleted" },
+                new SelectListItem { Value = "3", Text = "3) Withdrawn" },
+                new SelectListItem { Value = "6", Text = "6) Paused" }
+            };
+            ViewBag.Outcome = new List<SelectListItem>
+            { 
+                new SelectListItem { Value = "1", Text = "1) Achieved" },
+                new SelectListItem { Value = "2", Text = "2) Partial-Achieved" },
+                new SelectListItem { Value = "3", Text = "3) Null-Achieved" },
+                new SelectListItem { Value = "8", Text = "8) Not-Known" }
+            };
 
             return View(userDetails);
         }
@@ -134,10 +162,10 @@ namespace ILRXmlGenerator.Controllers
                                 new XElement("StdCode", userDetails.StdCode),
                                 new XElement("DelLocPostCode", "WS15 3JQ"),
                                 new XElement("EPAOrgID", "EPA0061"),
-                                new XElement("CompStatus", "2"),
-                                new XElement("LearnActEndDate", "2024-08-15"),
-                                new XElement("Outcome", "1"),
-                                new XElement("AchDate", "2024-04-25"),
+                                new XElement("CompStatus", userDetails.CompletionStatus),
+                                new XElement("LearnActEndDate", "2023-08-22"), // Optional - if not given use planned end date ***
+                                new XElement("Outcome", userDetails.Outcome), 
+                                new XElement("AchDate", userDetails.LearnPlanEndDate.ToString("yyyy-MM-dd")), //*
                                 new XElement("SWSupAimId", "0c29a200c9d14749a90ce04a5b202ca6"),
                                 new XElement("LearningDeliveryFAM",
                                     new XElement("LearnDelFAMType", "SOF"),
@@ -149,41 +177,41 @@ namespace ILRXmlGenerator.Controllers
                                 ),
                                 new XElement("LearningDeliveryFAM",
                                     new XElement("LearnDelFAMType", "ACT"),
-                                    new XElement("LearnDelFAMCode", "2"),
-                                    new XElement("LearnDelFAMDateFrom", "2023-08-15"),
-                                    new XElement("LearnDelFAMDateTo", "2024-08-15")
+                                    new XElement("LearnDelFAMCode", "2"), // it can be 1 or 2
+                                    new XElement("LearnDelFAMDateFrom", userDetails.LearnStartDate.ToString("yyyy-MM-dd")), //*
+                                    new XElement("LearnDelFAMDateTo", userDetails.LearnPlanEndDate.ToString("yyyy-MM-dd")) //*
                                 ),
                                 new XElement("AppFinRecord",
                                     new XElement("AFinType", "TNP"),
                                     new XElement("AFinCode", "1"),
                                     new XElement("AFinDate", "2023-08-15"),
-                                    new XElement("AFinAmount", "3500")
+                                    new XElement("AFinAmount", userDetails.TNP1)
                                 ),
                                 new XElement("AppFinRecord",
                                     new XElement("AFinType", "PMR"),
                                     new XElement("AFinCode", "1"),
                                     new XElement("AFinDate", "2023-08-15"),
-                                    new XElement("AFinAmount", "291")
+                                    new XElement("AFinAmount", userDetails.TNP1/AcademicYearHelper.CalculateMonthDifference(userDetails.LearnStartDate, userDetails.LearnPlanEndDate))
                                 ),
                                 new XElement("AppFinRecord",
                                     new XElement("AFinType", "TNP"),
                                     new XElement("AFinCode", "2"),
                                     new XElement("AFinDate", "2023-08-15"),
-                                    new XElement("AFinAmount", "500")
+                                    new XElement("AFinAmount", userDetails.TNP2)
                                 )
                             ),
                             new XElement("LearningDelivery",
                                 new XElement("LearnAimRef", "60152680"),
                                 new XElement("AimType", "3"),
                                 new XElement("AimSeqNumber", "2"),
-                                new XElement("LearnStartDate", "2023-08-15"),
-                                new XElement("LearnPlanEndDate", "2024-08-15"),
+                                new XElement("LearnStartDate", userDetails.LearnStartDate.ToString("yyyy-MM-dd")),//*
+                                new XElement("LearnPlanEndDate", userDetails.LearnPlanEndDate.ToString("yyyy-MM-dd")),//*
                                 new XElement("FundModel", "36"),
                                 new XElement("ProgType", "25"),
                                 new XElement("StdCode", userDetails.StdCode),
                                 new XElement("DelLocPostCode", "WS15 3JQ"),
-                                new XElement("CompStatus", "2"),
-                                new XElement("LearnActEndDate", "2024-08-15"),
+                                new XElement("CompStatus", userDetails.CompletionStatus),
+                                new XElement("LearnActEndDate", userDetails.LearnStartDate.ToString("yyyy-MM-dd")), //*
                                 new XElement("Outcome", "1"),
                                 new XElement("SWSupAimId", "d2400c387a9d5647b260ecdb80867c55"),
                                 new XElement("LearningDeliveryFAM",
@@ -195,17 +223,15 @@ namespace ILRXmlGenerator.Controllers
                     )
                 );
 
+                var fileName = $"ILR-{userDetails.UKPRN}-{userDetails.AcademicYear}-{DateTime.Now.ToString("yyyyMMdd")}-{DateTime.Now.ToString("HHmmss")}-1.xml";
 
-                var fileName = $"ILR-{userDetails.UKPRN}-{userDetails.AcademicYear}-{DateTime.Now.ToString("yyyyMMdd")}-000001-1.xml";
-
-                var settings = new XmlWriterSettings
+                byte[] xmlBytes;
+                using (var ms = new MemoryStream())
                 {
-                    Indent = true,
-                    IndentChars = "    "
-                };
-
-                using var xmlWriter = XmlWriter.Create(fileName, settings);
-                xmlDocument.Save(xmlWriter);
+                    xmlDocument.Save(ms);
+                    xmlBytes = ms.ToArray();
+                }
+                return File(xmlBytes, "application/xml", fileName);
             }
 
             return View("Index", userDetails);

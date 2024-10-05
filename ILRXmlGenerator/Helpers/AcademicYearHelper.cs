@@ -16,5 +16,17 @@
 
             return $"{startYear}-{endYear.ToString().Substring(2)}";
         }
+
+        public static int CalculateMonthDifference(DateTime startDate, DateTime endDate)
+        {
+            int monthDifference = (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month;
+
+            if (endDate.Day < startDate.Day)
+            {
+                monthDifference--;
+            }
+
+            return monthDifference;
+        }
     }
 }

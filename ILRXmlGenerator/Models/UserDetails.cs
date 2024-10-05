@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace ILRXmlGenerator.Models
 {
@@ -9,8 +10,6 @@ namespace ILRXmlGenerator.Models
 
         [Required(ErrorMessage = "ULN is required")]
         public string ULN { get; set; }
-
-        [Required(ErrorMessage = "Academic Year is required")]
         public string AcademicYear { get; set; }
 
         [Required(ErrorMessage = "Family Name is required")]
@@ -35,8 +34,11 @@ namespace ILRXmlGenerator.Models
         public string StdCode { get; set; }
 
         [Required(ErrorMessage = "TNP1 is required")]
-        public string TNP1 { get; set; }
+        public int TNP1 { get; set; }
         [Required(ErrorMessage = "TNP2 is required")]
-        public string TNP2 { get; set; }
+        public int TNP2 { get; set; }
+        public string CompletionStatus { get; set; }
+        public string Outcome { get; set; }
+        public DateTime? LearnActEndDate { get; set; }
     }
 }
